@@ -45,12 +45,7 @@ defmodule VipexTest do
 
     test "can replace parse_env_var/2" do
       Application.put_env(:vipex, Vipex, [:only_test_var])
-      config = Keyword.put(@default_transformer_config, :parse_env_var, fn config_var, env_var ->
-        case env_var do
-          nil -> config_var
-          _ -> "default"
-        end
-      end)
+      config = Keyword.put(@default_transformer_config, :parse_env_var, fn _, _ -> "default" end)
       Application.put_env(:vipex, Vipex.Transformer, config)
       assert [:only_test_var] == Application.get_env(:vipex, Vipex)
       System.put_env("VIPEX_VIPEX", "only_replacement")

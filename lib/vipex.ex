@@ -49,6 +49,7 @@ defmodule Vipex do
   end
 
   @spec parse_env_var(any, String.t | nil) :: any
+  defp parse_env_var(config_var, nil), do: config_var
   defp parse_env_var(config_var, env_var) do
     func = Application.get_env(:vipex, Vipex.Transformer)[:parse_env_var]
     func.(config_var, env_var)
