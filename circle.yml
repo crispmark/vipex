@@ -16,12 +16,9 @@ jobs:
             mix deps.get
       - restore_cache:
           keys:
-            - deps-cache-{{ arch }}-{{ checksum "mix.lock" }}-{{ checksum "mix.exs" }}
-            - deps-cache-{{ arch }}-{{ checksum "mix.lock" }}
-      - restore_cache:
-          keys:
-            - build-cache-{{ arch }}-{{ checksum "mix.lock" }}-{{ checksum "mix.exs" }}
-            - build-cache-{{ arch }}-{{ checksum "mix.lock" }}
+            - cache-{{ arch }}-{{ checksum "mix.lock" }}-{{ checksum "mix.exs" }}
+            - cache-{{ arch }}-{{ checksum "mix.lock" }}
+            - cache-{{ arch }}
       - run:
           name: Test warning-free compilation
           command: |
@@ -39,18 +36,7 @@ jobs:
           command: mix test
 
       - save_cache:
-          key: deps-cache-{{ arch }}-{{ checksum "mix.lock" }}-{{ checksum "mix.exs" }}
+          key: cache-{{ arch }}-{{ checksum "mix.lock" }}-{{ checksum "mix.exs" }}
           paths:
             - deps/
-      - save_cache:
-          key: deps-cache-{{ arch }}-{{ checksum "mix.lock" }}
-          paths:
-            - deps/
-      - save_cache:
-          key: build-cache-{{ arch }}-{{ checksum "mix.lock" }}-{{ checksum "mix.exs" }}
-          paths:
-            - _build/test/
-      - save_cache:
-          key: build-cache-{{ arch }}-{{ checksum "mix.lock" }}
-          paths:
             - _build/test/
