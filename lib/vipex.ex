@@ -14,6 +14,8 @@ defmodule Vipex do
       end
   """
 
+  alias Vipex.Transformer
+
   @doc"""
   Applies the environment variables to all loaded applications' configs
   """
@@ -84,14 +86,14 @@ defmodule Vipex do
 
   @spec env_string(atom, term, atom | nil) :: String.t
   defp env_string(application, key, keyword \\ nil) do
-    func = Application.get_env(:vipex, Vipex.Transformer)[:env_string]
+    func = Application.get_env(:vipex, Vipex.Transformer)[:env_string] || &Transformer.env_string/3
     func.(application, key, keyword)
   end
 
   @spec parse_env_var(any, String.t | nil) :: any
   defp parse_env_var(config_var, nil), do: config_var
   defp parse_env_var(config_var, env_var) do
-    func = Application.get_env(:vipex, Vipex.Transformer)[:parse_env_var]
+    func = Application.get_env(:vipex, Vipex.Transformer)[:parse_env_var] || &Transformer.parse_env_var/2
     func.(config_var, env_var)
   end
 
