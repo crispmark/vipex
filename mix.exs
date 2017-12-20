@@ -22,8 +22,9 @@ defmodule Vipex.Mixfile do
   defp deps do
     [
       {:poison, "~> 3.1"},
-      {:credo, "~> 0.8", only: [:test], runtime: false},
-      {:dialyxir, "~> 0.5", only: [:test], runtime: false},
+      {:credo, "~> 0.8", only: :test, runtime: false},
+      {:dialyxir, "~> 0.5", only: :test, runtime: false},
+      {:ex_doc, "~> 0.18", only: :dev, runtime: false},
     ]
   end
 
