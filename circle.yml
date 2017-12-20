@@ -1,0 +1,71 @@
+version: 2
+
+references:
+#Setting the docker containers we'll be using across jobs, as well as the working directory.
+  container_config: &container_config
+    docker:
+      - image: elixir:1.5.2-alpine
+
+
+jobs:
+  build:
+    docker:
+      - image: elixir:1.5.2-alpine
+    steps:
+      - checkout
+      - run:
+          name: Install hex, rebar, and dependencies
+          command: |
+            mix local.hex --force
+            mix local.rebar --force
+            mix deps.get
+      - restore_cache:
+          keys:
+            - deps-cache-{{ arch }}-{{ checksum "mix.lock" }}-{{ checksum "mix.exs" }}
+            - deps-cache-{{ arch }}-{{ checksum "mix.lock" }}
+      - restore_cache:
+          keys:
+            - build-cache-{{ arch }}-{{ checksum "mix.lock" }}-{{ checksum "mix.exs" }}
+            - build-cache-{{ arch }}-{{ checksum "mix.lock" }}
+      - run:
+          name: Test warning-free compilation
+          command: |
+            mix compile
+            mix clean
+            mix compile --warnings-as-errors
+      - run:
+          name: Elixir Tests
+          command: mix test
+
+      - save_cache:
+          key: deps-cache-{{ arch }}-{{ checksum "mix.lock" }}-{{ checksum "mix.exs" }}
+          paths:
+            - deps/
+      - save_cache:
+          key: deps-cache-{{ arch }}-{{ checksum "mix.lock" }}
+          paths:
+            - deps/
+      - save_cache:
+          key: build-cache-{{ arch }}-{{ checksum "mix.lock" }}-{{ checksum "mix.exs" }}
+          paths:
+            - _build/test/
+      - save_cache:
+          key: build-cache-{{ arch }}-{{ checksum "mix.lock" }}
+          paths:
+            - _build/test/
+  test:
+    docker:
+      - image: elixir:1.5.2-alpine
+    steps:
+      - run:
+          name: Elixir Tests
+          command: mix test
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
