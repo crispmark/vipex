@@ -3,8 +3,6 @@ defmodule Vipex do
   Documentation for Vipex.
   """
 
-  alias Vipex.Transformer
-
   @spec apply_all_env_config(Keyword.t) :: :ok
   def apply_all_env_config(opts \\ []) do
     Application.loaded_applications()
@@ -31,17 +29,29 @@ defmodule Vipex do
   defp config_from_env(application, {key, [{_keyword, _val} | _tail] = keyword_list}) do
     Enum.map(keyword_list, fn {keyword, val} ->
       application
-      |> Transformer.env_string(key, keyword)
+      |> env_string(key, keyword)
       |> System.get_env
-      |> (&({keyword, Transformer.parse_env_var(val, &1)})).()
+      |> (&({keyword, parse_env_var(val, &1)})).()
     end)
   end
 
   defp config_from_env(application, {key, val}) do
     application
-    |> Transformer.env_string(key)
+    |> env_string(key)
     |> System.get_env
-    |> (&Transformer.parse_env_var(val, &1)).()
+    |> (&parse_env_var(val, &1)).()
+  end
+
+  @spec env_string(atom, term, atom) :: String.t
+  defp env_string(application, key, keyword \\ nil) do
+    func = Application.get_env(:vipex, Vipex.Transformer)[:env_string]
+    func.(application, key, keyword)
+  end
+
+  @spec parse_env_var(any, String.t | nil) :: any
+  defp parse_env_var(config_var, env_var) do
+    func = Application.get_env(:vipex, Vipex.Transformer)[:parse_env_var]
+    func.(config_var, env_var)
   end
 
 end
