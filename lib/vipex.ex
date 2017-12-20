@@ -15,7 +15,6 @@ defmodule Vipex do
     :ok
   end
 
-
   @doc """
   Applies the environment variables to the provided application's config
 
