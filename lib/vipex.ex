@@ -27,7 +27,7 @@ defmodule Vipex do
     :ok
   end
 
-  @spec config_from_env(:atom, {term, Keyword.t | any}) :: list({atom, term}) | {term, any}
+  @spec config_from_env(atom, {term, Keyword.t | any}) :: Keyword.t | any
   defp config_from_env(application, {key, [{_keyword, _val} | _tail] = keyword_list}) do
     Enum.map(keyword_list, fn {keyword, val} ->
       application
