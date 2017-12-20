@@ -33,7 +33,7 @@ jobs:
           command: mix dialyzer --halt-exit-status
       - run:
           name: Credo
-          command: mix credo --strict
+          command: mix credo
       - run:
           name: Elixir Tests
           command: mix test
