@@ -23,10 +23,6 @@ defmodule Vipex.TransformerTest do
   end
 
   describe "parse_env_var" do
-    test "returns original config value when env var is nil" do
-      assert "original" == Transformer.parse_env_var("original", nil)
-    end
-
     test "parses atom" do
       assert :atom == Transformer.parse_env_var("original", ":atom")
     end
