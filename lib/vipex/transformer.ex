@@ -2,14 +2,12 @@ defmodule Vipex.Transformer do
   @moduledoc false
 
   @spec env_string(atom, term, atom) :: String.t
-  def env_string(application, key, keyword) do
-    "#{application}_#{module_to_string(key)}_#{keyword}"
-    |> format_string
-  end
-
-  @spec env_string(atom, term) :: String.t
-  def env_string(application, key) do
-    "#{application}_#{module_to_string(key)}"
+  def env_string(application, key, keyword \\ nil) do
+    module = module_to_string(key)
+    case keyword do
+      nil -> "#{application}_#{module}"
+      keyword -> "#{application}_#{module}_#{keyword}"
+    end
     |> format_string
   end
 
