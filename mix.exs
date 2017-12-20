@@ -35,7 +35,7 @@ defmodule Vipex.Mixfile do
   defp package() do
     [
       name: "vipex",
-      files: ["lib", "mix.exs", "README*"],
+      files: ["lib", "config", "mix.exs", "README*"],
       maintainers: ["Mark Crisp"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/crispmark/vipex"}
