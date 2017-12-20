@@ -1,6 +1,17 @@
 defmodule Vipex do
   @moduledoc """
   Maps environment variables to configuration options
+
+  For best results apply environment configuration at application start
+
+      defmodule MyApp.Application do
+        use Application
+
+        def start(_type, _args) do
+          Vipex.apply_env_config(:my_app)
+          Supervisor.start_link([], strategy: :one_for_one)
+        end
+      end
   """
 
   @doc"""
