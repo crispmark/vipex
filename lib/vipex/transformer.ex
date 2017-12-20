@@ -5,10 +5,9 @@ defmodule Vipex.Transformer do
   def env_string(application, key, keyword \\ nil) do
     module = module_to_string(key)
     case keyword do
-      nil -> "#{application}_#{module}"
-      keyword -> "#{application}_#{module}_#{keyword}"
+      nil -> "#{application}_#{module}" |> format_string
+      keyword -> "#{application}_#{module}_#{keyword}" |> format_string
     end
-    |> format_string
   end
 
   @spec format_string(String.t) :: String.t

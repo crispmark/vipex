@@ -27,6 +27,12 @@ jobs:
             mix clean
             mix compile --warnings-as-errors
       - run:
+          name: Dialyzer
+          command: mix dialyzer --halt-exit-status
+      - run:
+          name: Credo
+          command: mix credo --strict
+      - run:
           name: Elixir Tests
           command: mix test
 
