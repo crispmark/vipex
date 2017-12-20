@@ -18,10 +18,11 @@ defmodule Vipex do
   def apply_env_config(application, opts \\ []) do
     application
     |> Application.get_all_env
-    |> Enum.each(fn {key, _val} = key_tuple ->
-      :ok = application
-            |> config_from_env(key_tuple)
-            |> (&Application.put_env(application, key, &1, opts)).()
+    |> Enum.each(fn {key, val} = key_tuple ->
+      :ok = case config_from_env(application, key_tuple) do
+        ^val -> :ok
+        new_val -> Application.put_env(application, key, new_val, opts)
+      end
     end)
     :ok
   end
