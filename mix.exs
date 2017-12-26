@@ -8,6 +8,7 @@ defmodule Vipex.Mixfile do
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       deps: deps(),
+      docs: docs(),
       description: description(),
       package: package(),
       name: "Vipex",
@@ -28,11 +29,18 @@ defmodule Vipex.Mixfile do
     ]
   end
 
-  defp description() do
+  defp docs do
+    [
+      main: "readme",
+      extras: ["README.md"]
+    ]
+  end
+
+  defp description do
     "Provides a mechanism for overriding configurations with environment variables."
   end
 
-  defp package() do
+  defp package do
     [
       name: "vipex",
       files: ["lib", "mix.exs", "README*"],
